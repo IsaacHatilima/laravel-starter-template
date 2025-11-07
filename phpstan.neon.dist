@@ -1,9 +1,13 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+
 parameters:
     level: 8
     paths:
         - app
     excludePaths:
         - tests/*
-        - app/Http/Middleware/*
-        - app/Providers/*
-        - database/*
+        - app/Http/Middleware/**
+        - app/Providers/**
+        - database/**

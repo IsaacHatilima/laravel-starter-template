@@ -27,10 +27,10 @@ test('profile information can be updated', function () {
 
     $user->refresh();
 
-    expect($user->profile->first_name)->toBe('John');
-    expect($user->profile->last_name)->toBe('Doe');
-    expect($user->email)->toBe('test@example.com');
-    expect($user->email_verified_at)->toBeNull();
+    expect($user->profile->first_name)->toBe('John')
+        ->and($user->profile->last_name)->toBe('Doe')
+        ->and($user->email)->toBe('test@example.com')
+        ->and($user->email_verified_at)->toBeNull();
 });
 
 test('email verification status is unchanged when the email address is unchanged', function () {

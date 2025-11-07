@@ -40,7 +40,8 @@ class ProfileController extends Controller
         ProfileUpdateRequest $request,
         UpdateProfileAction $action
     ): RedirectResponse {
-        $user = $request->user();
+        $user = $this->currentUser();
+
         $this->authorize('update', $user->profile);
 
         $dto = ProfileDto::fromUpdateRequest($request);
@@ -54,7 +55,7 @@ class ProfileController extends Controller
 
     public function destroy(CurrentPasswordRequest $request): RedirectResponse
     {
-        $user = $request->user();
+        $user = $this->currentUser();
 
         $this->authorize('delete', $user->profile);
 
