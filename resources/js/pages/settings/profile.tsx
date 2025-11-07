@@ -1,18 +1,15 @@
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { send } from '@/routes/verification';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Transition } from '@headlessui/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 
 import DeleteUser from '@/components/delete-user';
 import HeadingSmall from '@/components/heading-small';
-import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
+import InputWithError from '@/components/input-with-error';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -48,44 +45,49 @@ export default function Profile({
                         }}
                         className="space-y-6"
                     >
-                        {({ processing, recentlySuccessful, errors }) => (
+                        {({ processing }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
-
-                                    <Input
-                                        id="name"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
+                                    <InputWithError
+                                        label="First Name"
+                                        name="first_name"
+                                        type="text"
                                         required
-                                        autoComplete="name"
-                                        placeholder="Full name"
-                                    />
-
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.name}
+                                        defaultValue={
+                                            auth.user.profile.first_name
+                                        }
+                                        autoFocus
+                                        tabIndex={1}
+                                        autoComplete="first_name"
+                                        placeholder="John"
                                     />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email address</Label>
-
-                                    <Input
-                                        id="email"
-                                        type="email"
-                                        className="mt-1 block w-full"
-                                        defaultValue={auth.user.email}
-                                        name="email"
+                                    <InputWithError
+                                        label="Last Name"
+                                        name="last_name"
+                                        type="test"
                                         required
-                                        autoComplete="username"
-                                        placeholder="Email address"
+                                        defaultValue={
+                                            auth.user.profile.last_name
+                                        }
+                                        tabIndex={2}
+                                        autoComplete="last_name"
+                                        placeholder="Doe"
                                     />
+                                </div>
 
-                                    <InputError
-                                        className="mt-2"
-                                        message={errors.email}
+                                <div className="grid gap-2">
+                                    <InputWithError
+                                        label="Email Address"
+                                        name="email"
+                                        type="email"
+                                        required
+                                        defaultValue={auth.user.email}
+                                        tabIndex={3}
+                                        autoComplete="email"
+                                        placeholder="email@example.com"
                                     />
                                 </div>
 
@@ -123,18 +125,6 @@ export default function Profile({
                                     >
                                         Save
                                     </Button>
-
-                                    <Transition
-                                        show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <p className="text-sm text-neutral-600">
-                                            Saved
-                                        </p>
-                                    </Transition>
                                 </div>
                             </>
                         )}

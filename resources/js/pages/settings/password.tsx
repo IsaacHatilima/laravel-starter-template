@@ -1,16 +1,13 @@
 import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
-import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
-import { Transition } from '@headlessui/react';
 import { Form, Head } from '@inertiajs/react';
 import { useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
+import PasswordInputWithError from '@/components/password-input-with-error';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/user-password';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -57,62 +54,39 @@ export default function Password() {
                         }}
                         className="space-y-6"
                     >
-                        {({ errors, processing, recentlySuccessful }) => (
+                        {({ processing }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="current_password">
-                                        Current password
-                                    </Label>
-
-                                    <Input
-                                        id="current_password"
-                                        ref={currentPasswordInput}
+                                    <PasswordInputWithError
+                                        label="Current Password"
                                         name="current_password"
-                                        type="password"
-                                        className="mt-1 block w-full"
-                                        autoComplete="current-password"
-                                        placeholder="Current password"
-                                    />
-
-                                    <InputError
-                                        message={errors.current_password}
+                                        forgotPassword={false}
+                                        required
+                                        autoFocus
+                                        tabIndex={1}
+                                        autoComplete="current_password"
                                     />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password">
-                                        New password
-                                    </Label>
-
-                                    <Input
-                                        id="password"
-                                        ref={passwordInput}
+                                    <PasswordInputWithError
+                                        label="Password"
                                         name="password"
-                                        type="password"
-                                        className="mt-1 block w-full"
-                                        autoComplete="new-password"
-                                        placeholder="New password"
+                                        forgotPassword={false}
+                                        required
+                                        tabIndex={2}
+                                        autoComplete="password"
                                     />
-
-                                    <InputError message={errors.password} />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="password_confirmation">
-                                        Confirm password
-                                    </Label>
-
-                                    <Input
-                                        id="password_confirmation"
+                                    <PasswordInputWithError
+                                        label="Confirm Password"
                                         name="password_confirmation"
-                                        type="password"
-                                        className="mt-1 block w-full"
-                                        autoComplete="new-password"
-                                        placeholder="Confirm password"
-                                    />
-
-                                    <InputError
-                                        message={errors.password_confirmation}
+                                        forgotPassword={false}
+                                        required
+                                        tabIndex={3}
+                                        autoComplete="password_confirmation"
                                     />
                                 </div>
 
@@ -123,18 +97,6 @@ export default function Password() {
                                     >
                                         Save password
                                     </Button>
-
-                                    <Transition
-                                        show={recentlySuccessful}
-                                        enter="transition ease-in-out"
-                                        enterFrom="opacity-0"
-                                        leave="transition ease-in-out"
-                                        leaveTo="opacity-0"
-                                    >
-                                        <p className="text-sm text-neutral-600">
-                                            Saved
-                                        </p>
-                                    </Transition>
                                 </div>
                             </>
                         )}

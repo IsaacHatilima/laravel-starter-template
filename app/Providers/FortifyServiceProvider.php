@@ -4,11 +4,14 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
@@ -31,6 +34,20 @@ class FortifyServiceProvider extends ServiceProvider
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::query()->where('email', $request->string('email')->value())->first();
+
+            if (! $user) {
+                throw ValidationException::withMessages(['email' => 'Invalid E-Mail or Password provided.']);
+            }
+
+            if (! Hash::check($request->string('password')->value(), (string) $user->password)) {
+                throw ValidationException::withMessages(['email' => 'Invalid E-Mail or Password provided.']);
+            }
+
+            return $user;
+        });
     }
 
     /**

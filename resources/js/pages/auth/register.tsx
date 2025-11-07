@@ -1,14 +1,13 @@
 import { login } from '@/routes';
-import { store } from '@/routes/register';
-import { Form, Head } from '@inertiajs/react';
 
-import InputError from '@/components/input-error';
+import { store } from '@/actions/App/Http/Controllers/Auth/RegisterController';
+import { Form, Head } from '@inertiajs/react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
+import InputWithError from '@/components/input-with-error';
+import PasswordInputWithError from '@/components/password-input-with-error';
 
 export default function Register() {
     return (
@@ -23,70 +22,65 @@ export default function Register() {
                 disableWhileProcessing
                 className="flex flex-col gap-6"
             >
-                {({ processing, errors }) => (
+                {({ processing }) => (
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
+                                <InputWithError
+                                    label="First Name"
+                                    name="first_name"
                                     type="text"
                                     required
                                     autoFocus
                                     tabIndex={1}
-                                    autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
-                                />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
+                                    autoComplete="first_name"
+                                    placeholder="John"
                                 />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
+                                <InputWithError
+                                    label="Last Name"
+                                    name="last_name"
+                                    type="test"
                                     required
                                     tabIndex={2}
-                                    autoComplete="email"
-                                    name="email"
-                                    placeholder="email@example.com"
+                                    autoComplete="last_name"
+                                    placeholder="Doe"
                                 />
-                                <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
-                                <Input
-                                    id="password"
-                                    type="password"
+                                <InputWithError
+                                    label="Email Address"
+                                    name="email"
+                                    type="email"
                                     required
                                     tabIndex={3}
-                                    autoComplete="new-password"
-                                    name="password"
-                                    placeholder="Password"
+                                    autoComplete="email"
+                                    placeholder="email@example.com"
                                 />
-                                <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
-                                </Label>
-                                <Input
-                                    id="password_confirmation"
-                                    type="password"
+                                <PasswordInputWithError
+                                    label="Password"
+                                    name="password"
+                                    forgotPassword={false}
                                     required
                                     tabIndex={4}
-                                    autoComplete="new-password"
-                                    name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    autoComplete="password"
                                 />
-                                <InputError
-                                    message={errors.password_confirmation}
+                            </div>
+
+                            <div className="grid gap-2">
+                                <PasswordInputWithError
+                                    label="Confirm Password"
+                                    name="password_confirmation"
+                                    forgotPassword={false}
+                                    required
+                                    tabIndex={5}
+                                    autoComplete="password_confirmation"
                                 />
                             </div>
 

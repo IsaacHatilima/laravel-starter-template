@@ -1,8 +1,8 @@
-import InputError from '@/components/input-error';
+import InputWithError from '@/components/input-with-error';
+import PasswordInputWithError from '@/components/password-input-with-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
@@ -34,12 +34,12 @@ export default function Login({
                 resetOnSuccess={['password']}
                 className="flex flex-col gap-6"
             >
-                {({ processing, errors }) => (
+                {({ processing }) => (
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
+                                <InputWithError
+                                    label="Email Address"
                                     id="email"
                                     type="email"
                                     name="email"
@@ -49,32 +49,18 @@ export default function Login({
                                     autoComplete="email"
                                     placeholder="email@example.com"
                                 />
-                                <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                    {canResetPassword && (
-                                        <TextLink
-                                            href={request()}
-                                            className="ml-auto text-sm"
-                                            tabIndex={5}
-                                        >
-                                            Forgot password?
-                                        </TextLink>
-                                    )}
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
+                                <PasswordInputWithError
+                                    label="Password"
                                     name="password"
+                                    forgotPassword={canResetPassword}
+                                    forgotPasswordLink={request().url}
                                     required
                                     tabIndex={2}
-                                    autoComplete="current-password"
-                                    placeholder="Password"
+                                    autoComplete="password"
                                 />
-                                <InputError message={errors.password} />
                             </div>
 
                             <div className="flex items-center space-x-3">

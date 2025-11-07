@@ -2,17 +2,26 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Actions\Profile\UpdateProfileAction;
+use App\Dtos\ProfileDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Http\Requests\CurrentPasswordRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class ProfileController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Show the user's profile settings page.
      */
@@ -25,39 +34,39 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile settings.
+     * @throws Throwable
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    public function update(
+        ProfileUpdateRequest $request,
+        UpdateProfileAction $action
+    ): RedirectResponse {
+        $user = $request->user();
+        $this->authorize('update', $user->profile);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+        $dto = ProfileDto::fromUpdateRequest($request);
 
-        $request->user()->save();
+        $email = trim(Str::lower($request->string('email')->value()));
 
-        return to_route('profile.edit');
+        $action->execute($user->profile, $dto, $email);
+
+        return back()->with('success', 'Profile updated successfully.');
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(CurrentPasswordRequest $request): RedirectResponse
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
 
-        Auth::logout();
+        $this->authorize('delete', $user->profile);
 
         $user->delete();
+
+        /** @var StatefulGuard $guard */
+        $guard = Auth::guard('web');
+        $guard->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return to_route('login')->with('success', 'Profile deleted successfully. Goodbye!');
     }
 }

@@ -3,13 +3,10 @@ import { login } from '@/routes';
 import { email } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-
-import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import InputWithError from '@/components/input-with-error';
 
 export default function ForgotPassword({ status }: { status?: string }) {
     return (
@@ -27,20 +24,19 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
             <div className="space-y-6">
                 <Form {...email.form()}>
-                    {({ processing, errors }) => (
+                    {({ processing }) => (
                         <>
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
+                                <InputWithError
+                                    label="Email Address"
                                     name="email"
-                                    autoComplete="off"
+                                    type="email"
+                                    required
                                     autoFocus
+                                    tabIndex={1}
+                                    autoComplete="off"
                                     placeholder="email@example.com"
                                 />
-
-                                <InputError message={errors.email} />
                             </div>
 
                             <div className="my-6 flex items-center justify-start">

@@ -1,3 +1,4 @@
+import Alert from '@/components/alert';
 import AppLogoIcon from '@/components/app-logo-icon';
 import {
     Card,
@@ -34,6 +35,7 @@ export default function AuthCardLayout({
                 <div className="flex flex-col gap-6">
                     <Card className="rounded-xl">
                         <CardHeader className="px-10 pt-8 pb-0 text-center">
+                            <Alert />
                             <CardTitle className="text-xl">{title}</CardTitle>
                             <CardDescription>{description}</CardDescription>
                         </CardHeader>
