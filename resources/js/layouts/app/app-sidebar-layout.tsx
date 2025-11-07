@@ -1,12 +1,11 @@
-import { AppContent } from '@/components/app-content';
-import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
-import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import { type BreadcrumbItem } from '@/types';
 import { type PropsWithChildren, useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
 import { toast, Toaster } from 'sonner';
 import { Flash } from '@/types/common';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import Header from '@/components/header';
 
 export default function AppSidebarLayout({
     children,
@@ -25,13 +24,13 @@ export default function AppSidebarLayout({
         });
     }, [flash]);
     return (
-        <AppShell variant="sidebar">
+        <SidebarProvider>
             <AppSidebar />
-            <AppContent variant="sidebar" className="overflow-x-hidden">
-                <AppSidebarHeader breadcrumbs={breadcrumbs} />
+            <SidebarInset>
+                <Header breadcrumbs={breadcrumbs} />
                 <Toaster position="top-right" expand={true} richColors />
-                {children}
-            </AppContent>
-        </AppShell>
+                <div className="mt-3 mr-2 ml-2 md:ml-0">{children}</div>
+            </SidebarInset>
+        </SidebarProvider>
     );
 }

@@ -1,3 +1,4 @@
+import AppearanceMode from '@/components/appearance-mode';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { Icon } from '@/components/icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -185,6 +186,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
+                        <AppearanceMode />
                         <div className="relative flex items-center space-x-1">
                             <Button
                                 variant="ghost"
@@ -238,8 +240,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             alt={auth.user.name}
                                         />
                                         <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials('Isaac Hatilima')}
-                                            {/*auth.user.profile.first_name +' ' +auth.user.profile.last_name,*/}
+                                            {getInitials(
+                                                auth.user.profile.first_name +
+                                                    ' ' +
+                                                    auth.user.profile.last_name,
+                                            )}
                                         </AvatarFallback>
                                     </Avatar>
                                 </Button>
