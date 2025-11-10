@@ -1,6 +1,6 @@
 import { login } from '@/routes';
 
-import { store } from '@/actions/App/Http/Controllers/Auth/RegisterController';
+import { store } from '@/routes/register';
 import { Form, Head } from '@inertiajs/react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';

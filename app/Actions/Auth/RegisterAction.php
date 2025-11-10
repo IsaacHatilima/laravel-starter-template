@@ -11,9 +11,11 @@ use App\Repository\ProfileRepository;
 use App\Repository\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Throwable;
 
-class RegisterAction
+class RegisterAction implements CreatesNewUsers
 {
     private ProfileRepository $profileRepository;
 
@@ -28,10 +30,18 @@ class RegisterAction
     }
 
     /**
+     * @param array<string, mixed> $input
      * @throws Throwable
      */
-    public function execute(RegisterRequest $request): User
+    public function create(array $input): User
     {
+        $rules = (new RegisterRequest())->rules();
+        $validated = Validator::make($input, $rules)->validate();
+
+        $request = new RegisterRequest();
+        $request->merge($validated);
+
+
         return DB::transaction(function () use ($request): User {
             // Create User instance
             $user = $this->userRepository->create([
