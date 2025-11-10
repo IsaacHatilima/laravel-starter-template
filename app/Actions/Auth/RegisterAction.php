@@ -37,7 +37,6 @@ class RegisterAction
             $user = $this->userRepository->create([
                 'email' => strtolower($request->string('email')->value()),
                 'password' => Hash::make($request->string('password')->value()),
-                'downloaded_codes' => false,
                 'is_active' => true,
             ]);
 
