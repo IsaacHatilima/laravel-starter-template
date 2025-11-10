@@ -41,7 +41,7 @@ function Alert() {
     return (
         <div
             id="alert-border-1"
-            className={`mb-4 flex items-center border-t-4 p-4 text-sm font-medium ${classes.border} ${classes.bg} ${classes.text}`}
+            className={`mb-4 flex w-full items-center border-t-4 p-4 text-sm font-medium ${classes.border} ${classes.bg} ${classes.text}`}
             role="alert"
         >
             <div className="flex flex-col items-start gap-2">

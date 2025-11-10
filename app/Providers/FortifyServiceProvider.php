@@ -39,11 +39,13 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::query()->where('email', $request->string('email')->value())->first();
 
             if (! $user) {
-                throw ValidationException::withMessages(['email' => 'Invalid E-Mail or Password provided.']);
+                session()->flash('warning', 'Invalid Email or Password provided.');
+                throw ValidationException::withMessages([]);
             }
 
             if (! Hash::check($request->string('password')->value(), (string) $user->password)) {
-                throw ValidationException::withMessages(['email' => 'Invalid E-Mail or Password provided.']);
+                session()->flash('warning', 'Invalid Email or Password provided.');
+                throw ValidationException::withMessages([]);
             }
 
             return $user;
