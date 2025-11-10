@@ -10,11 +10,16 @@ template also includes the introduction of Repositories and DTOs.
 
 ### Static Analysis and Code Style
 
-- [PHPStan](https://phpstan.org/)  
+- [PHPStan](https://phpstan.org/)
   Static analysis for PHP. Development only.
 
-- [PHP Insights](https://github.com/nunomaduro/phpinsights)  
+- [PHP Insights](https://github.com/nunomaduro/phpinsights)
   Code quality and architecture analysis. Development only.
+
+### Others
+
+- [Log Viewer](https://log-viewer.opcodes.io/)
+  Beautiful log viewer.
 
 ## Documentation
 
@@ -22,6 +27,7 @@ template also includes the introduction of Repositories and DTOs.
 - [Inertia.js](https://inertiajs.com/)
 - [React](https://react.dev/)
 - [PHPStan](https://phpstan.org/)
+- [Pest](https://pestphp.com/)
 - [PHP Insights](https://github.com/nunomaduro/phpinsights)
 - [Laravel Pint](https://laravel.com/docs/12.x/pint)
 - [shadcn/ui](https://ui.shadcn.com/)
@@ -41,7 +47,21 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
+# Run tests and code quality checks
+# Pint Expected: PASS
+./vendor/bin/pint
+
+# PHPInsights Expected: All 100%
+php artisan insights
+
+# PHPStan Expected: No Errors
+./vendor/bin/phpstan analyse --level=10 app/
+
+# Tests Expected: All to pass
+php artisan test
+
 # Run local development servers
 php artisan serve
+
 npm run dev
 ```

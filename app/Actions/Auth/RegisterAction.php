@@ -31,6 +31,7 @@ class RegisterAction implements CreatesNewUsers
 
     /**
      * @param array<string, mixed> $input
+     *
      * @throws Throwable
      */
     public function create(array $input): User
@@ -40,7 +41,6 @@ class RegisterAction implements CreatesNewUsers
 
         $request = new RegisterRequest();
         $request->merge($validated);
-
 
         return DB::transaction(function () use ($request): User {
             // Create User instance
