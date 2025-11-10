@@ -6,8 +6,4 @@ parameters:
     level: 8
     paths:
         - app
-    excludePaths:
-        - tests/*
-        - app/Http/Middleware/**
-        - app/Providers/**
-        - database/**
+        - tests

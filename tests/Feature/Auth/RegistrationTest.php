@@ -7,7 +7,7 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
-    $response = $this->post(route('register-user.store'), [
+    $response = $this->post(route('register'), [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => 'test@example.com',
@@ -20,7 +20,7 @@ test('new users can register', function () {
 });
 
 test('new users cannot register with invalid password', function () {
-    $response = $this->post(route('register-user.store'), [
+    $response = $this->post(route('register'), [
         'first_name' => 'John',
         'last_name' => 'Doe',
         'email' => 'test@example.com',
