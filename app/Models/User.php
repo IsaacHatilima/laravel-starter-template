@@ -67,6 +67,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    protected $attributes = [
+        'is_active' => true,
+    ];
+
     /**
      * @return HasOne<Profile, $this>
      */

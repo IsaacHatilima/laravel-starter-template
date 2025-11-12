@@ -50,3 +50,14 @@ function createUser()
         'password' => Hash::make('Password1#')
     ]);
 }
+
+function login(): void
+{
+    $user = createUser();
+
+    visit(route('login'))
+        ->fill('email', $user->email)
+        ->fill('password', 'Password1#')
+        ->press('Log in')
+        ->assertUrlIs(route('dashboard'));
+}

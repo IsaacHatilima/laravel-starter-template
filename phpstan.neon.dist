@@ -6,3 +6,6 @@ parameters:
     level: max
     paths:
         - app
+    excludePaths:
+        - tests/*
+        - database/*

@@ -23,7 +23,7 @@
 
     <!-- PHPSTAN -->
     <TaskOptions>
-        <option name="arguments" value="analyse app/ --level=8 --configuration=phpstan.neon.dist"/>
+        <option name="arguments" value="analyse app/ --level=10 --configuration=phpstan.neon.dist"/>
         <option name="checkSyntaxErrors" value="true"/>
         <option name="description"/>
         <option name="exitCodeBehavior" value="ERROR"/>
