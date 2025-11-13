@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     environment:
-      APP_KEY: base64:IMgkBJWOc0wfP164nUFFFcL5QlPb+4d+s65ViyKfCjw=
+      APP_KEY: base64:MY-APP-SECRET
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
