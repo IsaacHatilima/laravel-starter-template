@@ -64,4 +64,9 @@ php artisan test
 php artisan serve
 
 npm run dev
+
+# Or via docker
+ docker compose up -d --build
+ 
+ docker compose exec app php artisan migrate --force
 ```
