@@ -8,8 +8,11 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
+import { redirect } from '@/routes/google';
 import { request } from '@/routes/password';
 import { Form, Head } from '@inertiajs/react';
+import { FieldSeparator } from '@/components/ui/field';
+import { FaGoogle } from 'react-icons/fa';
 
 interface LoginProps {
     status?: string;
@@ -81,6 +84,19 @@ export default function Login({
                             >
                                 {processing && <Spinner />}
                                 Log in
+                            </Button>
+
+                            <FieldSeparator>Or continue with</FieldSeparator>
+
+                            <Button
+                                variant="outline"
+                                type="button"
+                                onClick={() =>
+                                    (window.location.href = redirect.url())
+                                }
+                            >
+                                <FaGoogle />
+                                Login with Google
                             </Button>
                         </div>
 

@@ -25,7 +25,7 @@ const colorMap = {
     },
 } as const;
 
-function Alert() {
+export default function Alert() {
     const pageProps = usePage().props;
     const flash = pageProps.flash as Flash;
 
@@ -51,5 +51,3 @@ function Alert() {
         </div>
     );
 }
-
-export default Alert;

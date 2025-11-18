@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Settings\ConnectedAccountsController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TwoFactorAuthenticationController;
@@ -20,4 +21,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('settings/two-factor', [TwoFactorAuthenticationController::class, 'show'])
         ->name('two-factor.show');
+
+    Route::get('settings/connected-accounts', [ConnectedAccountsController::class, 'edit'])
+        ->name('connected-accounts.edit');
+
+    Route::get('settings/connected-accounts/redirect', [ConnectedAccountsController::class, 'redirectToGoogle'])
+        ->name('connected-accounts.redirectToGoogle');
+    Route::delete(
+        'settings/connected-accounts/delete/{connectedAccount}',
+        [ConnectedAccountsController::class, 'destroy']
+    )
+        ->name('connected-accounts.destroy');
 });

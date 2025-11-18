@@ -1,6 +1,6 @@
 import { AppSidebar } from '@/components/app-sidebar';
 import { type BreadcrumbItem } from '@/types';
-import { type PropsWithChildren, useEffect } from 'react';
+import { type PropsWithChildren, useEffect, useRef } from 'react';
 import { usePage } from '@inertiajs/react';
 import { toast, Toaster } from 'sonner';
 import { Flash } from '@/types/common';
@@ -13,7 +13,13 @@ export default function AppSidebarLayout({
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     const pageProps = usePage().props;
     const flash = pageProps.flash as Flash;
+    const lastFlash = useRef<string | null>(null);
     useEffect(() => {
+        const serialized = JSON.stringify(flash);
+
+        if (serialized === lastFlash.current) return;
+        lastFlash.current = serialized;
+
         (['success', 'info', 'warning', 'error'] as const).forEach((type) => {
             const message = flash?.[type];
             if (message) {

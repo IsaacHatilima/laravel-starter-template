@@ -36,6 +36,7 @@ export interface User {
     email: string;
     is_active: boolean;
     profile: Profile;
+    connected_accounts: ConnectedAccount[];
     avatar?: string;
     email_verified_at: string | null;
     two_factor_enabled?: boolean;
@@ -50,4 +51,14 @@ export interface Profile {
     last_name: string;
 
     [key: string]: unknown;
+}
+
+export interface ConnectedAccount {
+    id: string;
+    identifier: string;
+    service: string;
+    created_at: string;
+    updated_at: string;
+
+    [key: string]: unknown; // This allows for additional properties...
 }

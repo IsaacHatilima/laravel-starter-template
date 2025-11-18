@@ -1,8 +1,8 @@
+import Alert from '@/components/alert';
 import AppLogoIcon from '@/components/app-logo-icon';
 import { home } from '@/routes';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-import Alert from '@/components/alert';
 
 interface AuthLayoutProps {
     name?: string;

@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,6 +33,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $updated_at
  *
  * @property-read Profile $profile
+ * @property-read ConnectedAccount $connectedAccounts
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -77,6 +79,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
+    }
+
+    /**
+     * @return HasMany<ConnectedAccount, $this>
+     */
+    public function connectedAccounts(): HasMany
+    {
+        return $this->hasMany(ConnectedAccount::class);
     }
 
     /**
