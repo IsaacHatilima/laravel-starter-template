@@ -21,7 +21,7 @@ template also includes the introduction of Repositories and DTOs.
 - [Log Viewer](https://log-viewer.opcodes.io/)
   Beautiful log viewer.
 
-## Documentation
+## Tool Documentation
 
 - [Laravel](https://laravel.com/)
 - [Inertia.js](https://inertiajs.com/)
@@ -32,20 +32,15 @@ template also includes the introduction of Repositories and DTOs.
 - [Laravel Pint](https://laravel.com/docs/12.x/pint)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Laravel Fortify](https://laravel.com/docs/12.x/fortify#main-content)
+- [Laravel Horizon](https://laravel.com/docs/12.x/horizon#running-horizon)
+- [Laravel Socialite](https://laravel.com/docs/12.x/socialite)
 
 ## Getting Started
 
 ```bash
 
-# Install PHP dependencies
-composer install
-
-# Install JavaScript dependencies
-npm install
-
-# Copy environment config and generate app key
-cp .env.example .env
-php artisan key:generate
+# App Setup
+composer run setup
 
 # Run tests and code quality checks
 # Pint Expected: PASS
@@ -58,15 +53,13 @@ php artisan insights
 ./vendor/bin/phpstan analyse --level=10 app/
 
 # Tests Expected: All to pass
-php artisan test
+composer run test
 
 # Run local development servers
-php artisan serve
-
-npm run dev
+composer run dev
 
 # Or via docker
- docker compose up -d --build
+docker compose up -d --build
  
- docker compose exec app php artisan migrate --force
+docker compose exec app php artisan migrate --force
 ```
