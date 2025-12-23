@@ -29,6 +29,7 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response = $this
         ->actingAs($user)
+        ->withHeader('X-Inertia', 'true')
         ->patch(route('profile.update'), [
             'email' => 'test@mail.com',
             'first_name' => 'John',
@@ -37,7 +38,8 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response
         ->assertRedirect(route('profile.edit'))
-        ->assertSessionHas('success', 'Profile updated successfully.');
+        ->assertSessionHas('inertia.flash_data.status', 'success')
+        ->assertSessionHas('inertia.flash_data.message', 'Profile updated successfully.');
 
     $user->refresh();
 
@@ -54,6 +56,7 @@ test('email verification status is changed when the email address is unchanged',
 
     $response = $this
         ->actingAs($user)
+        ->withHeader('X-Inertia', 'true')
         ->patch(route('profile.update', $user->profile->id), [
             'email' => 'john.doe@mail.com',
             'first_name' => 'John',
@@ -62,7 +65,8 @@ test('email verification status is changed when the email address is unchanged',
 
     $response
         ->assertRedirect(route('profile.edit'))
-        ->assertSessionHas('success', 'Profile updated successfully.');
+        ->assertSessionHas('inertia.flash_data.status', 'success')
+        ->assertSessionHas('inertia.flash_data.message', 'Profile updated successfully.');
 
     $user->refresh();
 

@@ -152,6 +152,29 @@ return [
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
+        /*'options' => [
+            'replication' => 'sentinel',
+            'service' => 'mymaster',
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'persistent' => env('REDIS_PERSISTENT', false),
+        ],*/
+
+        /*'sentinels' => [
+            ['host' => '192.168.10.206', 'port' => 26379],
+        ],*/
+
+        /*'default' => [
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
+            'database' => env('REDIS_DB', '0'),
+        ],
+
+        'cache' => [
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
+            'database' => env('REDIS_CACHE_DB', '1'),
+        ],*/
+
         'default' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),

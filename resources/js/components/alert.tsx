@@ -1,4 +1,3 @@
-import { Flash } from '@/types/common';
 import { capitalize } from '@/utils/capitalise';
 import { usePage } from '@inertiajs/react';
 
@@ -25,27 +24,72 @@ const colorMap = {
     },
 } as const;
 
+type FlashMap = {
+    success?: string;
+    info?: string;
+    warning?: string;
+    error?: string;
+};
+
+type StatusFlash = {
+    status?: keyof FlashMap;
+    message?: string;
+};
+
 export default function Alert() {
-    const pageProps = usePage().props;
-    const flash = pageProps.flash as Flash;
+    const page = usePage();
+
+    const flash = page.flash as (FlashMap & StatusFlash) | undefined;
+    const { socialiteToast } = page.props as {
+        socialiteToast?: FlashMap;
+    };
+
+    if (flash?.status && flash.message) {
+        const classes = colorMap[flash.status];
+        if (!classes) return null;
+
+        return (
+            <AlertBox
+                type={flash.status}
+                message={flash.message}
+                classes={classes}
+            />
+        );
+    }
+
+    const source = socialiteToast ?? flash;
+    if (!source) return null;
 
     const type = (['success', 'info', 'warning', 'error'] as const).find(
-        (key) => flash[key],
+        (key) => source[key],
     );
-    const message = type ? flash[type] : null;
 
-    const classes = type ? colorMap[type] : null;
+    if (!type) return null;
+
+    const message = source[type];
+    const classes = colorMap[type];
 
     if (!message || !classes) return null;
 
+    return <AlertBox type={type} message={message} classes={classes} />;
+}
+
+function AlertBox({
+    type,
+    message,
+    classes,
+}: {
+    type: string;
+    message: string;
+    classes: { border: string; bg: string; text: string };
+}) {
     return (
         <div
-            id="alert-border-1"
             className={`mb-4 flex w-full items-center border-t-4 p-4 text-sm font-medium ${classes.border} ${classes.bg} ${classes.text}`}
             role="alert"
         >
             <div className="flex flex-col items-start gap-2">
-                <div className="font-bold">{type && capitalize(type)}</div>
+                <div className="font-bold">{capitalize(type)}</div>
                 <div>{message}</div>
             </div>
         </div>

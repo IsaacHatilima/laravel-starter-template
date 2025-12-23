@@ -29,6 +29,7 @@ test('password can be updated', function () {
 
     $response = $this
         ->actingAs($user)
+        ->withHeader('X-Inertia', 'true')
         ->from(route('user-password.edit'))
         ->put(route('user-password.update'), [
             'current_password' => 'Password1#',
@@ -39,7 +40,8 @@ test('password can be updated', function () {
     $response
         ->assertSessionHasNoErrors()
         ->assertRedirect(route('user-password.edit'))
-        ->assertSessionHas('success', 'Password updated successfully.');
+        ->assertSessionHas('inertia.flash_data.status', 'success')
+        ->assertSessionHas('inertia.flash_data.message', 'Password updated successfully.');
 
     expect(Hash::check('Password12#', $user->refresh()->password))->toBeTrue();
 });

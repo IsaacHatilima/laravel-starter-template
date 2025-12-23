@@ -27,6 +27,11 @@ class PasswordController extends Controller
             'password' => $request->string('password')->value(),
         ]);
 
-        return back()->with('success', 'Password updated successfully.');
+        Inertia::flash([
+            'status' => 'success',
+            'message' => 'Password updated successfully.',
+        ]);
+
+        return back();
     }
 }

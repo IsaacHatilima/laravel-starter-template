@@ -30,7 +30,6 @@ class ProfileController extends Controller
         $user = $this->currentUser();
 
         $this->authorize('view', $user->profile);
-
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
@@ -54,7 +53,12 @@ class ProfileController extends Controller
 
         $action->execute($user->profile, $dto, $email);
 
-        return back()->with('success', 'Profile updated successfully.');
+        Inertia::flash([
+            'status' => 'success',
+            'message' => 'Profile updated successfully.',
+        ]);
+
+        return back();
     }
 
     public function destroy(CurrentPasswordRequest $request): RedirectResponse
@@ -72,6 +76,11 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return to_route('login')->with('success', 'Profile deleted successfully. Goodbye!');
+        Inertia::flash([
+            'status' => 'success',
+            'message' => 'Profile deleted successfully. Goodbye.',
+        ]);
+
+        return to_route('login');
     }
 }

@@ -47,11 +47,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $user ? UserDto::fromModel($user)->toArray() : [],
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
-            'flash' => function () {
-                // A useEffect in the AppLayout component will be used to display
-                // toasts and form components just making requests.
-                // Messages will come from Laravel.
-                // The error here should not be confused with the errors prop in Inertia.
+            'socialiteToast' => function () {
+                // refactored to only work with Socialite toasts
                 return [
                     'success' => session()->get('success'),
                     'info' => session()->get('info'),
