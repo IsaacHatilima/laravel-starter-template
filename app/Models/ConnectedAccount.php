@@ -24,6 +24,7 @@ class ConnectedAccount extends Model
 {
     /** @use HasFactory<ConnectedAccountFactory> */
     use HasFactory;
+
     use HasUuids;
 
     protected $fillable = [

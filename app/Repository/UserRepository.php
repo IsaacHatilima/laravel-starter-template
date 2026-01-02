@@ -5,15 +5,38 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 
-class UserRepository
+final readonly class UserRepository
 {
-    public function __construct()
+    public function findByEmail(string $email): ?User
     {
+        return User::query()
+            ->where('email', $email)
+            ->first();
+    }
+
+    public function findByPublicId(string $publicId): ?User
+    {
+        return User::query()
+            ->where('public_id', $publicId)
+            ->first();
     }
 
     /**
-     * @param  array<string, string|bool>  $data
+     * @param array<string, mixed> $criteria
+     *
+     * @return Collection<int, User>
+     */
+    public function findMultiple(array $criteria): Collection
+    {
+        return User::query()
+            ->where($criteria)
+            ->get();
+    }
+
+    /**
+     * @param array<string, mixed> $data
      */
     public function create(array $data): User
     {
@@ -21,17 +44,17 @@ class UserRepository
     }
 
     /**
-     * @param  User  $user
-     * @param  string  $email
+     * @param array<string, mixed> $data
      */
-    public function updateEmail(User $user, string $email): void
+    public function update(User $user, array $data): User
     {
-        $normalized = strtolower($email);
+        $user->update($data);
 
-        if ($user->email !== $normalized) {
-            $user->email = $normalized;
-            $user->email_verified_at = null;
-            $user->save();
-        }
+        return $user->refresh();
+    }
+
+    public function delete(User $user): bool
+    {
+        return (bool) $user->delete();
     }
 }

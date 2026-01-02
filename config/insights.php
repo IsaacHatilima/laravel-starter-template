@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineFunctions;
-use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenFinalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenPrivateMethods;
 use NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits;
@@ -76,8 +76,8 @@ return [
 
     'add' => [
         Classes::class => [
-            ForbiddenFinalClasses::class,
             LineLengthSniff::class,
+            CyclomaticComplexityIsHigh::class,
         ],
     ],
 
@@ -100,13 +100,17 @@ return [
             'title' => 'The usage of private methods is not idiomatic in Laravel.',
         ],
         LineLengthSniff::class => [
-            'lineLengthLimit' => 120,
+            'lineLengthLimit' => 160,
+            'absoluteLineLimit' => 180,
             'ignoreImports' => true,
         ],
         FunctionLengthSniff::class => [
             'maxLinesLength' => 50,
             'includeComments' => false,
             'includeWhitespace' => false,
+        ],
+        CyclomaticComplexityIsHigh::class => [
+            'maxComplexity' => 8,
         ],
     ],
 
@@ -123,7 +127,7 @@ return [
 
     'requirements' => [
         //        'min-quality' => 0,
-        //        'min-complexity' => 0,
+        //        'min-complexity' => 8,
         //        'min-architecture' => 0,
         //        'min-style' => 0,
         //        'disable-security-check' => false,

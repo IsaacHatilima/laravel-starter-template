@@ -1,21 +1,28 @@
 <?php
 
 use App\Actions\Profile\UpdateProfileAction;
-use App\Dtos\ProfileDto;
-use App\Models\Profile;
+use App\DTOs\Command\Settings\ProfileUpdateRequestDTO;
+use App\Models\User;
 
 test('profile update action class', function () {
-    $user = createUser();
-
-    $dto = new ProfileDto(
-        id: $user->profile->id,
-        firstName: 'John',
-        lastName: 'Doe',
-    );
+    /** @var User $createdUser */
+    $createdUser = createUser();
 
     $action = app(UpdateProfileAction::class);
+    $dto = new ProfileUpdateRequestDTO('john@mail.com', 'John', 'Doe');
 
-    $result = $action->execute($user->profile, $dto, $user->email);
+    $user = $action->execute($dto, $createdUser);
 
-    expect($result)->toBeInstanceOf(Profile::class);
+    expect($user)
+        ->toBeInstanceOf(User::class)
+        ->email->toBe('john@mail.com');
+
+    $this->assertDatabaseHas('users', [
+        'email' => 'john@mail.com',
+    ]);
+
+    $this->assertDatabaseHas('profiles', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+    ]);
 });

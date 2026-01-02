@@ -74,7 +74,7 @@ class GoogleAuthController extends Controller
         /** @var User $user */
         $user = User::query()->findOrFail($userId);
 
-        //Callback deletes the user from session, so we need to re-authenticate
+        // Callback deletes the user from session, so we need to re-authenticate
         Auth::login($user);
 
         // Link Google account to the authenticated user

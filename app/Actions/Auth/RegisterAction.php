@@ -2,12 +2,10 @@
 
 namespace App\Actions\Auth;
 
-use App\Dtos\ProfileDto;
+use App\DTOs\Command\Auth\RegisterRequestDTO;
 use App\Http\Requests\RegisterRequest;
 use App\Jobs\SendVerificationEmailJob;
-use App\Models\Profile;
 use App\Models\User;
-use App\Repository\ProfileRepository;
 use App\Repository\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,18 +13,11 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Throwable;
 
-class RegisterAction implements CreatesNewUsers
+readonly class RegisterAction implements CreatesNewUsers
 {
-    private ProfileRepository $profileRepository;
-
-    private UserRepository $userRepository;
-
     public function __construct(
-        ProfileRepository $profileRepository,
-        UserRepository $userRepository
+        private UserRepository $userRepository
     ) {
-        $this->profileRepository = $profileRepository;
-        $this->userRepository = $userRepository;
     }
 
     /**
@@ -41,23 +32,18 @@ class RegisterAction implements CreatesNewUsers
 
         $request = new RegisterRequest();
         $request->merge($validated);
+        $dto = RegisterRequestDTO::fromRequest($request);
 
-        return DB::transaction(function () use ($request): User {
-            // Create User instance
+        return DB::transaction(function () use ($dto): User {
             $user = $this->userRepository->create([
-                'email' => strtolower($request->string('email')->value()),
-                'password' => Hash::make($request->string('password')->value()),
-                'is_active' => true,
+                'email' => $dto->email,
+                'password' => Hash::make($dto->password),
             ]);
 
-            // Create Users profile
-            $dto = ProfileDto::fromRegisterRequest($request);
-            $profile = new Profile();
-            $profile->first_name = $dto->firstName;
-            $profile->last_name = $dto->lastName;
-            $profile->user_id = $user->id;
-
-            $this->profileRepository->save($profile);
+            $user->profile()->create([
+                'first_name' => $dto->firstName,
+                'last_name' => $dto->lastName,
+            ]);
 
             SendVerificationEmailJob::dispatch($user);
 

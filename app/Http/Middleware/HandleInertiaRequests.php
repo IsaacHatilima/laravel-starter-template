@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Dtos\UserDto;
+use App\DTOs\Read\User\UserDTO;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;

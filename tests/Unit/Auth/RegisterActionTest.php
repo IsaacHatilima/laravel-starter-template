@@ -3,31 +3,33 @@
 use App\Actions\Auth\RegisterAction;
 use App\Jobs\SendVerificationEmailJob;
 use App\Models\User;
-use App\Repository\ProfileRepository;
-use App\Repository\UserRepository;
+use Illuminate\Support\Facades\Queue;
 
-test('that true is true', function () {
+test('registers a user and dispatches verification email', function () {
     Queue::fake();
 
-    $user = new User(['email' => 'john@mail.com']);
+    $action = app(RegisterAction::class);
 
-    $userRepo = Mockery::mock(UserRepository::class);
-    $profileRepo = Mockery::mock(ProfileRepository::class);
+    $user = $action->create([
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'john@mail.com',
+        'password' => 'Password1#',
+        'password_confirmation' => 'Password1#',
+    ]);
 
-    $userRepo->shouldReceive('create')->once()->andReturn($user);
-    $profileRepo->shouldReceive('save')->once();
+    expect($user)
+        ->toBeInstanceOf(User::class)
+        ->email->toBe('john@mail.com');
 
-    $action = new RegisterAction($profileRepo, $userRepo);
+    $this->assertDatabaseHas('users', [
+        'email' => 'john@mail.com',
+    ]);
 
-    $response = $action->create([
-                                    'first_name' => 'John',
-                                    'last_name' => 'Doe',
-                                    'email' => 'john@mail.com',
-                                    'password' => 'Password1#',
-                                    'password_confirmation' => 'Password1#',
-                                ]);
+    $this->assertDatabaseHas('profiles', [
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+    ]);
 
     Queue::assertPushed(SendVerificationEmailJob::class);
-
-    expect($response)->toBe($user);
 });

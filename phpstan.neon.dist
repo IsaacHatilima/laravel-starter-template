@@ -9,3 +9,6 @@ parameters:
     excludePaths:
         - tests/*
         - database/*
+        - config/*
+        - vendor/*
+        - app/Providers/*

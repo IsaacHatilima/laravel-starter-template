@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Actions\Profile\UpdateProfileAction;
-use App\Dtos\ProfileDto;
+use App\DTOs\Command\Settings\ProfileUpdateRequestDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CurrentPasswordRequest;
 use App\Http\Requests\ProfileUpdateRequest;
@@ -13,7 +13,6 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Throwable;
@@ -30,6 +29,7 @@ class ProfileController extends Controller
         $user = $this->currentUser();
 
         $this->authorize('view', $user->profile);
+
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
@@ -47,11 +47,9 @@ class ProfileController extends Controller
 
         $this->authorize('update', $user->profile);
 
-        $dto = ProfileDto::fromUpdateRequest($request);
+        $dto = ProfileUpdateRequestDTO::fromRequest($request);
 
-        $email = trim(Str::lower($request->string('email')->value()));
-
-        $action->execute($user->profile, $dto, $email);
+        $action->execute($dto, $user);
 
         Inertia::flash([
             'status' => 'success',

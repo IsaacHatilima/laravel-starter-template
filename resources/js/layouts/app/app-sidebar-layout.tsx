@@ -22,6 +22,7 @@ export default function AppSidebarLayout({
     breadcrumbs = [],
 }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
     const page = usePage();
+    console.log(page.props);
 
     const flash = page.flash as Flash | undefined;
     const { socialiteToast } = page.props as {
