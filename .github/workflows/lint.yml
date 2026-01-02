@@ -1,14 +1,12 @@
-name: linter
+name: code quality
 
 on:
   push:
     branches:
-      - develop
-      - main
+      - master
   pull_request:
     branches:
-      - develop
-      - main
+      - master
 
 permissions:
   contents: write
@@ -31,6 +29,12 @@ jobs:
 
       - name: Run Pint
         run: vendor/bin/pint
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse --level=10 app/ --configuration=phpstan.neon.dist
+
+      - name: Run PHPInsights
+        run: php artisan insights
 
       - name: Format Frontend
         run: npm run format
